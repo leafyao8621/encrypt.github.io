@@ -79,14 +79,34 @@ function enc(s, n) {
     }
     return opt;
 }
-function dec(s, n) {
+function dec(s) {
     var opt = "";
     var lines = s.split("\n");
-    for (var i = 0; i < lines.length; i++) {
+    var n = lines[0] % 6;
+    for (var i = 1; i < lines.length; i++) {
         var words = lines[i].split(" ");
         for (var j = 0; j < words.length; j++) {
             var word = words[j];
-            
+            var ind = 0;
+            while (ind < word.length) {
+                var temp = "";
+                if (word.charAt(ind) != "#") {
+                    temp += word.charAt(ind++);
+                    temp += word.charAt(ind++);
+                    temp = String.fromCharCode(temp);
+                    for (var k = 0; k < n; k++) {
+                        temp = d1[temp];
+                    }
+                } else {
+                    ind++;
+                    while (word.charAt(ind) != "#") {
+                        temp += word.charAt(ind++);
+                    }
+                    ind++;
+                    temp = String.fromCharCode(temp);
+                }
+                opt += temp;
+            }
             opt += " ";
         }
         opt += "\n";
@@ -99,5 +119,9 @@ function encrypt() {
         n = Math.floor(Math.random() * 10000000);
     }
     var inp = document.getElementById("in").value;
-    document.getElementById("out").value = n + "\n" + enc(inp, n);
+    document.getElementById("out").value = n + "\n" + enc(inp, n % 6);
+}
+function decrypt() {
+    var inp = document.getElementById("in").value;
+    document.getElementById("out").value = dec(inp);
 }
