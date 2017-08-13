@@ -70,7 +70,7 @@ function enc(s, n) {
                     }
                     opt += temp.charCodeAt();
                 } else {
-                    opt += "#" + temp.charCodeAt() + "#";
+                    opt += "#" + (temp.charCodeAt() * n + n) + "#";
                 }
             }
             opt += " ";
@@ -103,6 +103,7 @@ function dec(s) {
                         temp += word.charAt(ind++);
                     }
                     ind++;
+                    temp = (temp - n) / n
                     temp = String.fromCharCode(temp);
                 }
                 opt += temp;
